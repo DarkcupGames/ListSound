@@ -28,12 +28,15 @@
         const githubRepo = 'DarkcupGames/ListSound';  // Tên repository của bạn
         const folderPath = 'Sound';  // Thư mục chứa các file âm thanh
 
+        // Mảng để lưu các file âm thanh sau khi lấy từ GitHub
+        let audioFiles = [];
+
         // Lấy danh sách các file âm thanh từ GitHub API
         fetch(`https://api.github.com/repos/${githubRepo}/contents/${folderPath}`)
             .then(response => response.json())
             .then(data => {
                 // Lọc ra chỉ các file âm thanh (mp3)
-                const audioFiles = data.filter(file => file.name.endsWith('.mp3'));
+                audioFiles = data.filter(file => file.name.endsWith('.mp3'));
 
                 // Lấy phần tử ul trong HTML để chèn danh sách âm thanh
                 const musicList = document.getElementById('music-list');
@@ -68,6 +71,43 @@
             .catch(error => {
                 console.error('Lỗi khi lấy danh sách file âm thanh:', error);
             });
+
+        // Hàm tìm kiếm
+        function searchMusic() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();  // Lấy giá trị tìm kiếm
+            const filteredFiles = audioFiles.filter(file => file.name.toLowerCase().includes(searchInput));  // Lọc các file có tên chứa từ khóa tìm kiếm
+
+            // Lấy phần tử ul trong HTML để chèn danh sách âm thanh
+            const musicList = document.getElementById('music-list');
+            musicList.innerHTML = '';  // Xóa danh sách cũ trước khi hiển thị lại
+
+            // Tạo lại các mục nhạc dựa trên kết quả tìm kiếm
+            filteredFiles.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('music-item');
+                
+                const trackTitle = document.createElement('span');
+                trackTitle.classList.add('track-title');
+                trackTitle.textContent = file.name.replace(".mp3", "");  // Lấy tên file mà không cần phần mở rộng
+
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                const sourceElement = document.createElement('source');
+                sourceElement.src = file.download_url;
+                sourceElement.type = "audio/mp3";
+                audioElement.appendChild(sourceElement);
+                
+                const downloadButton = document.createElement('button');
+                downloadButton.classList.add('download-button');
+                downloadButton.textContent = "Tải về";
+                downloadButton.onclick = () => window.location.href = file.download_url;
+                
+                listItem.appendChild(trackTitle);
+                listItem.appendChild(audioElement);
+                listItem.appendChild(downloadButton);
+                musicList.appendChild(listItem);
+            });
+        }
     </script>
 </body>
 </html>
