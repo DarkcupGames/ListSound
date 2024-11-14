@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List sound</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <section class="music-list">
+        <h1>List sound</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm bài hát..." onkeyup="searchMusic()">
+        </div>
+        <ul id="musicList">
+            <!-- Music Item 1 -->
+            <li class="music-item">
+                <span class="track-title">Silent Night</span>
+                <audio controls>
+                    <source src="audio/silent-night.mp3" type="audio/mp3">
+                    Trình duyệt của bạn không hỗ trợ audio.
+                </audio>
+                <button class="download-button" onclick="window.location.href='audio/silent-night.mp3'" download>Tải về</button>
+            </li>
+            
+            <!-- Music Item 2 -->
+            <li class="music-item">
+                <span class="track-title">Jingle Bells</span>
+                <audio controls>
+                    <source src="audio/jingle-bells.mp3" type="audio/mp3">
+                    Trình duyệt của bạn không hỗ trợ audio.
+                </audio>
+                <button class="download-button" onclick="window.location.href='audio/jingle-bells.mp3'" download>Tải về</button>
+            </li>
+            
+            <!-- Music Item 3 -->
+            <li class="music-item">
+                <span class="track-title">We Wish You a Merry Christmas</span>
+                <audio controls>
+                    <source src="audio/we-wish-you.mp3" type="audio/mp3">
+                    Trình duyệt của bạn không hỗ trợ audio.
+                </audio>
+                <button class="download-button" onclick="window.location.href='audio/we-wish-you.mp3'" download>Tải về</button>
+            </li>
+        </ul>
+    </section>
+
+    <script>
+        function searchMusic() {
+            var input, filter, ul, li, span, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById('musicList');
+            li = ul.getElementsByTagName('li');
+            
+            for (i = 0; i < li.length; i++) {
+                span = li[i].getElementsByClassName('track-title')[0];
+                txtValue = span.textContent || span.innerText;
+                
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

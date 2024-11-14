@@ -1,0 +1,105 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f9f9f9;
+}
+
+.music-list {
+    width: 80%;           /* Set width to 80% of the viewport */
+    height: 100vh;        /* Set height to 100% of the viewport */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center;     /* Căn giữa theo chiều dọc */
+  margin-bottom: 20px;     /* Khoảng cách dưới thanh tìm kiếm */
+}
+
+.search-input {
+  width: 60%; /* Chiều rộng của thanh tìm kiếm, bạn có thể điều chỉnh theo nhu cầu */
+  padding: 10px 20px; /* Khoảng cách giữa nội dung và viền input */
+  font-size: 16px; /* Kích thước chữ trong ô input */
+  border: 1px solid #ccc; /* Màu viền mặc định */
+  border-radius: 8px; /* Bo góc cho ô input */
+  outline: none; /* Loại bỏ viền khi focus */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển màu viền và bóng khi focus */
+  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
+}
+
+.search-input:focus {
+  border-color: #007bff; /* Màu viền khi focus */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); /* Tạo hiệu ứng bóng mờ xung quanh ô input khi focus */
+}
+
+.search-input::placeholder {
+  color: #888; /* Màu chữ cho placeholder */
+  font-style: italic; /* Làm chữ placeholder nghiêng */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.music-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.music-item:last-child {
+    border-bottom: none;
+}
+
+.track-title {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+audio {
+    flex: 2;
+    margin: 0 10px;
+}
+
+.download-button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
+}
