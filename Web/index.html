@@ -16,6 +16,11 @@
                 onkeyup="searchMusic()">
         </div>
     </section>
+    <section class="genre-list">
+        <ul id="genre-list">
+            <!-- Các mục thể loại sẽ được thêm bằng JavaScript -->
+        </ul>
+    </section>
     <section class="music-list">
         <!-- Danh sách nhạc -->
         <div class="scroll-container">
@@ -26,69 +31,92 @@
     </section>
 
     <script>
-        // Thay thế với thông tin của bạn
         const githubRepo = 'DarkcupGames/ListSound';  // Tên repository của bạn
         const folderPath = 'Sound';  // Thư mục chứa các file âm thanh
-
-        // Mảng để lưu các file âm thanh sau khi lấy từ GitHub
-        let audioFiles = []; // Mảng chứa danh sách các file âm thanh
-
+        let audioFiles = []; // Mảng chứa danh sách các file âm thanh hiện tại
+        let selectedGenre = ''; // Lưu tên thể loại đang chọn
+    
+        // Hàm lấy danh sách thể loại từ GitHub
         fetch(`https://api.github.com/repos/${githubRepo}/contents/${folderPath}`)
             .then(response => response.json())
             .then(data => {
-                // Lọc ra các file âm thanh có đuôi .mp3
-                audioFiles = data.filter(file => file.name.endsWith('.mp3'));
-
-                // Lấy phần tử ul trong HTML để chèn danh sách âm thanh
-                const musicList = document.getElementById('music-list');
-
-                // Tạo các mục nhạc trong danh sách
-                renderMusicList(audioFiles); // Gọi hàm render để hiển thị danh sách nhạc
+                const genreList = document.getElementById('genre-list');
+                const genres = data.filter(item => item.type === "dir"); // Chỉ lấy các thư mục
+    
+                // Hiển thị các thể loại vào DOM
+                genres.forEach(genre => {
+                    const genreItem = document.createElement('li');
+                    genreItem.classList.add('genre-item');
+                    genreItem.textContent = genre.name;
+                    genreItem.onclick = () => selectGenre(genre.name);
+                    genreList.appendChild(genreItem);
+                });
             })
             .catch(error => {
-                console.error('Lỗi khi lấy danh sách file âm thanh:', error);
+                console.error('Lỗi khi lấy danh sách thể loại:', error);
             });
-
-        // Hàm hiển thị danh sách âm thanh
-        function renderMusicList(files) {
+    
+        // Hàm chọn thể loại và tải danh sách âm thanh
+        function selectGenre(genre) {
+            selectedGenre = genre;
+            loadMusicByGenre(genre);
+    
+            // Cập nhật hiển thị để thể hiện thể loại đã chọn
+            document.querySelectorAll('.genre-item').forEach(item => {
+                item.classList.toggle('active', item.textContent === genre);
+            });
+        }
+    
+        // Hàm tải danh sách âm thanh theo thể loại
+        function loadMusicByGenre(genre) {
+            fetch(`https://api.github.com/repos/${githubRepo}/contents/${folderPath}/${genre}`)
+                .then(response => response.json())
+                .then(data => {
+                    audioFiles = data.filter(file => file.name.endsWith('.mp3'));
+                    displayMusicList(audioFiles); // Hiển thị danh sách nhạc
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải danh sách nhạc theo thể loại:', error);
+                });
+        }
+    
+        // Hàm hiển thị danh sách nhạc lên HTML
+        function displayMusicList(files) {
             const musicList = document.getElementById('music-list');
-            musicList.innerHTML = '';  // Xóa danh sách cũ trước khi hiển thị lại
-
-            // Tạo lại các mục nhạc từ mảng file
+            musicList.innerHTML = ''; // Xóa danh sách cũ
+    
             files.forEach(file => {
                 const listItem = document.createElement('li');
                 listItem.classList.add('music-item');
-
+    
                 const trackTitle = document.createElement('span');
                 trackTitle.classList.add('track-title');
-                trackTitle.textContent = file.name.replace(".mp3", "");  // Lấy tên file mà không cần phần mở rộng
-
+                trackTitle.textContent = file.name.replace(".mp3", "");
+    
                 const audioElement = document.createElement('audio');
                 audioElement.controls = true;
                 const sourceElement = document.createElement('source');
-                sourceElement.src = file.download_url;  // Sử dụng URL tải xuống trực tiếp từ API GitHub
+                sourceElement.src = file.download_url;
                 sourceElement.type = "audio/mp3";
                 audioElement.appendChild(sourceElement);
-
+    
                 const downloadButton = document.createElement('button');
                 downloadButton.classList.add('download-button');
                 downloadButton.textContent = "Tải về";
                 downloadButton.onclick = () => window.location.href = file.download_url;
-
+    
                 listItem.appendChild(trackTitle);
                 listItem.appendChild(audioElement);
                 listItem.appendChild(downloadButton);
                 musicList.appendChild(listItem);
             });
         }
-
-        // Hàm tìm kiếm
+    
+        // Hàm tìm kiếm nhạc trong thể loại đang chọn
         function searchMusic() {
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();  // Lấy giá trị tìm kiếm
-            const filteredFiles = audioFiles.filter(file => file.name.toLowerCase().includes(searchInput));  // Lọc các file có tên chứa từ khóa tìm kiếm
-
-            // Hiển thị lại danh sách nhạc theo kết quả tìm kiếm
-            renderMusicList(filteredFiles);
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredFiles = audioFiles.filter(file => file.name.toLowerCase().includes(searchInput));
+            displayMusicList(filteredFiles); // Hiển thị kết quả tìm kiếm
         }
     </script>
 </body>

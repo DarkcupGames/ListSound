@@ -61,7 +61,7 @@ h1 {
 }
 
 .music-list {
-    width: 90%; /* Dành nhiều không gian hơn cho các mục */
+    width: 95%; /* Dành nhiều không gian hơn cho các mục */
     height: calc(100vh - 150px); /* Giữ chiều cao cho phần header */
     background-color: #fff;
     padding: 20px;
@@ -90,13 +90,13 @@ ul {
     flex-direction: column; /* Để các phần tử trong mỗi item xếp theo chiều dọc */
     align-items: center; /* Căn giữa các phần tử trong item */
     justify-content: space-between;
-    padding: 20px;
+    padding: 17px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
     text-align: center;
-    flex: 0 1 10%;
-    margin: 20px; /* Đảm bảo mỗi item chiếm 20% chiều rộng của container */
+    flex: 0 1 23%;
+    margin: 17px;
 }
 
 .track-title {
@@ -123,4 +123,47 @@ audio {
 
 .download-button:hover {
     background-color: #0056b3;
+}
+
+.genre-list {
+    width: 95%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.genre-list h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+#genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.genre-item {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: rgb(0, 0, 0);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.genre-item:hover,
+.genre-item.active {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
 }
