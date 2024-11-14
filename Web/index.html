@@ -72,7 +72,7 @@
             fetch(`https://api.github.com/repos/${githubRepo}/contents/${folderPath}/${genre}`)
                 .then(response => response.json())
                 .then(data => {
-                    audioFiles = data.filter(file => file.name.endsWith('.mp3'));
+                    audioFiles = data.filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav'));
                     displayMusicList(audioFiles); // Hiển thị danh sách nhạc
                 })
                 .catch(error => {
