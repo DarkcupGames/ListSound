@@ -3,67 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List sound</title>
+    <title>Danh sách âm thanh</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <section class="music-list">
-        <h1>List sound</h1>
+        <h1>Danh sách âm thanh</h1>
+        
+        <!-- Thanh tìm kiếm -->
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm bài hát..." onkeyup="searchMusic()">
         </div>
-        <ul id="musicList">
-            <!-- Music Item 1 -->
-            <li class="music-item">
-                <span class="track-title">Silent Night</span>
-                <audio controls>
-                    <source src="audio/silent-night.mp3" type="audio/mp3">
-                    Trình duyệt của bạn không hỗ trợ audio.
-                </audio>
-                <button class="download-button" onclick="window.location.href='audio/silent-night.mp3'" download>Tải về</button>
-            </li>
-            
-            <!-- Music Item 2 -->
-            <li class="music-item">
-                <span class="track-title">Jingle Bells</span>
-                <audio controls>
-                    <source src="audio/jingle-bells.mp3" type="audio/mp3">
-                    Trình duyệt của bạn không hỗ trợ audio.
-                </audio>
-                <button class="download-button" onclick="window.location.href='audio/jingle-bells.mp3'" download>Tải về</button>
-            </li>
-            
-            <!-- Music Item 3 -->
-            <li class="music-item">
-                <span class="track-title">We Wish You a Merry Christmas</span>
-                <audio controls>
-                    <source src="audio/we-wish-you.mp3" type="audio/mp3">
-                    Trình duyệt của bạn không hỗ trợ audio.
-                </audio>
-                <button class="download-button" onclick="window.location.href='audio/we-wish-you.mp3'" download>Tải về</button>
-            </li>
-        </ul>
+        
+        <!-- Danh sách nhạc -->
+        <div class="scroll-container">
+            <ul id="music-list">
+                <!-- Các mục nhạc sẽ được thêm bằng JavaScript -->
+            </ul>
+        </div>
     </section>
 
     <script>
-        function searchMusic() {
-            var input, filter, ul, li, span, i, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById('musicList');
-            li = ul.getElementsByTagName('li');
-            
-            for (i = 0; i < li.length; i++) {
-                span = li[i].getElementsByClassName('track-title')[0];
-                txtValue = span.textContent || span.innerText;
-                
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
+        // Thay thế với thông tin của bạn
+        const githubRepo = 'DarkcupGames/ListSound';  // Tên repository của bạn
+        const folderPath = 'Sound';  // Thư mục chứa các file âm thanh
+
+        // Lấy danh sách các file âm thanh từ GitHub API
+        fetch(`https://api.github.com/repos/${githubRepo}/contents/${folderPath}`)
+            .then(response => response.json())
+            .then(data => {
+                // Lọc ra chỉ các file âm thanh (mp3)
+                const audioFiles = data.filter(file => file.name.endsWith('.mp3'));
+
+                // Lấy phần tử ul trong HTML để chèn danh sách âm thanh
+                const musicList = document.getElementById('music-list');
+
+                // Tạo các mục nhạc trong danh sách
+                audioFiles.forEach(file => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('music-item');
+                    
+                    const trackTitle = document.createElement('span');
+                    trackTitle.classList.add('track-title');
+                    trackTitle.textContent = file.name.replace(".mp3", "");  // Lấy tên file mà không cần phần mở rộng
+
+                    const audioElement = document.createElement('audio');
+                    audioElement.controls = true;
+                    const sourceElement = document.createElement('source');
+                    sourceElement.src = file.download_url;  // Sử dụng URL tải xuống trực tiếp từ API GitHub
+                    sourceElement.type = "audio/mp3";
+                    audioElement.appendChild(sourceElement);
+                    
+                    const downloadButton = document.createElement('button');
+                    downloadButton.classList.add('download-button');
+                    downloadButton.textContent = "Tải về";
+                    downloadButton.onclick = () => window.location.href = file.download_url;
+                    
+                    listItem.appendChild(trackTitle);
+                    listItem.appendChild(audioElement);
+                    listItem.appendChild(downloadButton);
+                    musicList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy danh sách file âm thanh:', error);
+            });
     </script>
 </body>
 </html>
