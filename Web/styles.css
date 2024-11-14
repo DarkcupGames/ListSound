@@ -8,85 +8,106 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Căn chỉnh các phần tử từ trên xuống dưới */
     height: 100vh;
     margin: 0;
     background-color: #f9f9f9;
+    flex-direction: column; /* Các phần tử sắp xếp theo chiều dọc */
+    width: 100%; /* Đảm bảo body chiếm toàn bộ chiều rộng */
+}
+
+.header-section {
+    width: 100%; /* Đảm bảo phần này chiếm toàn bộ chiều rộng */
+    display: flex;
+    flex-direction: column; /* Sắp xếp theo chiều dọc */
+    justify-content: center; /* Căn giữa */
+    align-items: center; /* Căn giữa */
+    margin-bottom: 20px; /* Khoảng cách dưới giữa header và list âm thanh */
+    padding: 0 10px; /* Thêm một chút padding để không bị sát cạnh */
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    width: 100%; /* Chiều rộng của thanh tìm kiếm bằng với chiều rộng của header */
+    display: flex;
+    justify-content: center; /* Căn giữa thanh tìm kiếm */
+    align-items: center;
+}
+
+.search-input {
+    width: 60%; /* Điều chỉnh độ rộng thanh tìm kiếm */
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.search-input::placeholder {
+    color: #888;
+    font-style: italic;
 }
 
 .music-list {
-    width: 80%;           /* Set width to 80% of the viewport */
-    height: 100vh;        /* Set height to 100% of the viewport */
+    width: 90%; /* Dành nhiều không gian hơn cho các mục */
+    height: calc(100vh - 150px); /* Giữ chiều cao cho phần header */
     background-color: #fff;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #333;
-}
-
-.search-container {
-  display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center;     /* Căn giữa theo chiều dọc */
-  margin-bottom: 20px;     /* Khoảng cách dưới thanh tìm kiếm */
-}
-
-.search-input {
-  width: 60%; /* Chiều rộng của thanh tìm kiếm, bạn có thể điều chỉnh theo nhu cầu */
-  padding: 10px 20px; /* Khoảng cách giữa nội dung và viền input */
-  font-size: 16px; /* Kích thước chữ trong ô input */
-  border: 1px solid #ccc; /* Màu viền mặc định */
-  border-radius: 8px; /* Bo góc cho ô input */
-  outline: none; /* Loại bỏ viền khi focus */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển màu viền và bóng khi focus */
-  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
-}
-
-.search-input:focus {
-  border-color: #007bff; /* Màu viền khi focus */
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); /* Tạo hiệu ứng bóng mờ xung quanh ô input khi focus */
-}
-
-.search-input::placeholder {
-  color: #888; /* Màu chữ cho placeholder */
-  font-style: italic; /* Làm chữ placeholder nghiêng */
+    overflow-y: auto; /* Cho phép cuộn khi nội dung dài */
+    display: flex;
+    flex-wrap: wrap; /* Các item sẽ tự động xuống dòng khi không đủ không gian */
+    justify-content: flex-start; /* Đảm bảo các item bắt đầu từ bên trái */
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex; /* Dùng flexbox để các phần tử con được sắp xếp ngang */
+    flex-wrap: wrap; /* Cho phép các item xuống dòng khi không đủ không gian */
+    justify-content: start;
 }
 
 .music-item {
     display: flex;
-    align-items: center;
+    flex-direction: column; /* Để các phần tử trong mỗi item xếp theo chiều dọc */
+    align-items: center; /* Căn giữa các phần tử trong item */
     justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #ddd;
-}
-
-.music-item:last-child {
-    border-bottom: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+    flex: 0 1 10%;
+    margin: 20px; /* Đảm bảo mỗi item chiếm 20% chiều rộng của container */
 }
 
 .track-title {
-    flex: 1;
     font-size: 16px;
     color: #333;
     font-weight: bold;
-    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 audio {
-    flex: 2;
-    margin: 0 10px;
+    margin-bottom: 10px;
 }
 
 .download-button {
